@@ -6,6 +6,10 @@ http://forum.xda-developers.com/showpost.php?p=5626300&postcount=3
 You can download this kitchen by using:
 git clone git://github.com/rmgeren/Android-ROM-Kitchen.git
 
+Version 0.2
+_______________
+Initial commit of SGS version.  Eliminated boot.img and apps2sd files, modified others, cleaned up the menu. 
+
 Version 0.1
 ----------------
 Initial commit, directly from dsixda's HTC Android Kitchen.
