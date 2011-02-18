@@ -71,14 +71,7 @@ else
   exit 0
 fi
 
-
-if [ -d BOOT-EXTRACTED/boot.img-ramdisk ]
-then
-  cd BOOT-EXTRACTED/boot.img-ramdisk
-else
-  echo "Error: BOOT-EXTRACTED/boot.img-ramdisk folder not found!"
-  exit 0
-fi
+cd BOOT-EXTRACTED/boot.img-ramdisk
 
 
 test_property=`grep -c "on property:cm.filesystem.ready=1" init.rc`
@@ -155,13 +148,6 @@ else
       
     fi
 
-  fi
-
-  
-  if [ "`grep sysinit init.rc`" == "" ]
-  then
-    echo
-    echo "Error: Unable to modify init.rc!"
   fi
 
   cd ../..

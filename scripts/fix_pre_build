@@ -1,22 +1,22 @@
 
 cd WORKING_*
 
+rm -f *.zip
+rm -f testkey.*
+rm -f signapk.jar
+rm -f signed*.zip
 
-if [ ! -e META-INF/com/google/android/update-script ] && [ ! -e META-INF/com/google/android/updater-script ]
+if [ "`find . -name update-script`" == "" ] 
 then
-  echo "Warning: update-script/updater-script not found"
-  echo
 
-  cd ..
-  exit 0
-elif [ -e META-INF/com/google/android/updater-script ]
-then
-  cd ..
+  if [ "`find . -name updater-script`" == "" ]
+  then
+    echo "Warning: update-script and updater-script not found"
+    echo
+  fi
+
   exit 0
 fi
-
-
-########### update-script enhancements follow ###########
 
 
 #
@@ -109,47 +109,21 @@ fi
 
 
 
-
 #
-# Fix entries in update-script for boot partition
+# Check for boot.img in working folder
 #
-
 if [ -e boot.img ]
 then
-  cd ..
-  cmd_line=`scripts/get_cmdline`
-  cd WORKING_*
-elif [ -e boot/initrd.gz ] && [ -e boot/zImage ]
-then
-  cmd_line="dsixda NAND"
-fi
-
-if [ "$cmd_line" == "dsixda NAND" ]
-then
-  if [ "`grep -c "write_raw_image .*:boot.img [ ]*BOOT:" META-INF/com/google/android/update-script`" != "0" ] 
+  if [ "`grep -c "write_raw_image PACKAGE:boot.img BOOT:" META-INF/com/google/android/update-script`" == "0" ] 
   then
-    echo "Replacing entries in update-script with NAND ROM boot folder instructions ..."
-    sed -i -e 's/write_raw_image .*:boot.img [ ]*BOOT:/copy_dir PACKAGE:boot BOOT:/g' META-INF/com/google/android/update-script
-
-  elif [ "`grep -c "copy_dir PACKAGE:boot.img BOOT:" META-INF/com/google/android/update-script`" == "0" ] 
-  then
-    echo "Adding entry in update-script for NAND ROM boot folder ..."
-    echo "copy_dir PACKAGE:boot.img BOOT:" >> META-INF/com/google/android/update-script
-  fi    
+    echo "boot.img found."
+    echo "Modifying update-script with syntax for flashing boot.img ..."
+    echo "write_raw_image PACKAGE:boot.img BOOT:" >> META-INF/com/google/android/update-script
+    echo
+  fi
 
 else
-
-  if [ -e boot.img ] && [ "$cmd_line" != "dsixda Null" ]
-  then
-    if [ "`grep -c "write_raw_image .*:boot.img [ ]*BOOT:" META-INF/com/google/android/update-script`" == "0" ] 
-    then
-      echo "boot.img found."
-      echo "Modifying update-script with syntax for flashing boot.img ..."
-      echo "write_raw_image PACKAGE:boot.img BOOT:" >> META-INF/com/google/android/update-script
-      echo
-    fi
-
-  elif [ "`grep -c " BOOT:" META-INF/com/google/android/update-script`" != "0" ] 
+  if [ "`grep -c " BOOT:" META-INF/com/google/android/update-script`" != "0" ] 
   then
     echo "boot.img not present in ROM."
     echo "Modifying update-script to remove syntax for flashing boot.img ..."
@@ -158,12 +132,10 @@ else
 fi
 
 
-
 #
 # Check for /system/bin/reboot in working folder, and then modify the update-script if required.
 # In some ROMs, 'reboot' may not be a symbolic link, so the kitchen did not delete it.
 #
-echo
 if [ -e system/bin/reboot ]
 then
 
@@ -171,8 +143,7 @@ then
   then
     echo "/system/bin/reboot found."
     echo "Modifying update-script so that the symlink is not required ..."
-    sed -i -e '/symlink toolbox SYSTEM:bin\/reboot$/d' META-INF/com/google/android/update-script
-    echo
+    sed -i -e 's/symlink toolbox SYSTEM:bin\/reboot\n//g' META-INF/com/google/android/update-script
   fi
 
 else
@@ -181,14 +152,7 @@ else
   then
     echo "/system/bin/reboot not present in ROM."  
     echo "Modifying update-script so that the symlink is created ..."
-    sed -i -e 's/symlink toolbox SYSTEM:bin\/ps$/symlink toolbox SYSTEM:bin\/ps\nsymlink toolbox SYSTEM:bin\/reboot/g' META-INF/com/google/android/update-script
- 
-    if [ "`grep -c "symlink toolbox SYSTEM:bin/reboot" META-INF/com/google/android/update-script`" == "0" ] 
-    then
-      sed -i -e 's/copy_dir PACKAGE:system SYSTEM:$/copy_dir PACKAGE:system SYSTEM:\nsymlink toolbox SYSTEM:bin\/reboot/g' META-INF/com/google/android/update-script
-    fi
-
-    echo
+    sed -i -e 's/symlink toolbox SYSTEM:bin\/notify/symlink toolbox SYSTEM:bin\/notify\nsymlink toolbox SYSTEM:bin\/reboot/g' META-INF/com/google/android/update-script
   fi
 fi
 
@@ -198,7 +162,7 @@ fi
 # Fix the apps2sd issue where update-script wants to remove /data/app but it returns an error
 #
 
-grep_cmd=`grep -c "delete DATA:app[ ]*$" META-INF/com/google/android/update-script`
+grep_cmd=`grep -c "delete DATA:app" META-INF/com/google/android/update-script`
 
 if [ "$grep_cmd" != "0" ]
 then
@@ -207,7 +171,7 @@ then
   echo
   echo "Replacing the line 'delete DATA:app' in the update-script with a script,"
   echo "to ensure /data/app actually exists ..."
-  sed -i -e '/delete DATA:app[ ]*$/d' update-script
+  sed -i -e 's/delete DATA:app[ ]*[\n]*//g' update-script
 
   if [ "`grep -c check_data_app update-script`" == "0" ]
   then
@@ -233,23 +197,14 @@ fi
 
 if [ -e boot.img ] 
 then
-
-  echo "Checking boot.img ..."
-
   cd ..
   scripts/ensure_boot_extracted no_clear
   if [ -d BOOT-EXTRACTED ]
   then
-    
-    if [ ! -e BOOT-EXTRACTED/boot.img-ramdisk/init.rc ]
-    then
-      echo "Warning: init.rc not found in boot.img"
-
-    elif [ `grep -c run-parts BOOT-EXTRACTED/boot.img-ramdisk/init.rc` ]
+    if [ `grep -c run-parts BOOT-EXTRACTED/boot.img-ramdisk/init.rc` ]
     then
       scripts/add_initd_perm_to_update_script
     fi
-
     rm -rf BOOT-EXTRACTED
   fi
 else
@@ -271,6 +226,12 @@ fi
 
 echo
 
+
+
+#
+# Clean up *.DS_Store hidden files
+#
+find . -name '*.DS_Store' -type f -delete
 
 cd ..
 

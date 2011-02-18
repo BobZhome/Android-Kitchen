@@ -1,8 +1,5 @@
 
-if [ "$1" == "" ]
-then
-  clear
-fi
+clear
 
 if [ ! -d WORKING_* ]
 then
@@ -10,6 +7,8 @@ then
   scripts/press_enter
   exit 0
 fi
+
+clear
 
 echo
 echo "ROOTING"
@@ -19,7 +18,7 @@ echo "The following will be done for root:"
 echo
 echo "- Add Superuser.apk and su"
 echo "- Add necessary lines to the update-script"
-echo "- Update default.prop in the ramdisk"
+echo "- Update default.prop"
 echo 
 echo "--------------------------------------------"
 echo
@@ -27,16 +26,8 @@ echo
 cd WORKING_*
 cd system
 
-if [ ! -e build.prop ]
-then
-  echo "Error: build.prop not found!"
-  cd ../..
-  scripts/press_enter
-  exit 0
-fi
-
 su_path=`find . -name su`
-super_path=`find . -iname Superuser.apk`
+super_path=`find . -name Superuser.apk`
 overwrite=0
 
 if [ "$su_path" != "" ] && [ "$super_path" != "" ] 
@@ -99,7 +90,7 @@ then
 else
   echo "Cancelled"
   cd ../..
-  exit 1
+  exit 0
 fi
 
 if [ "$overwrite" == "1" ]
@@ -123,7 +114,7 @@ cd ../..
 
 
 scripts/add_su_to_update_script
-scripts/do_root_boot_img
+scripts/do_root_secure
 
 
 echo 

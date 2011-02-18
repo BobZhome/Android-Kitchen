@@ -24,7 +24,7 @@ then
 
   if [ "$symlinks" == "" ]
   then
-    echo "None detected"
+    echo "None found"
   else
     echo "They will now be added to the update-script and removed from system/xbin"
 
@@ -166,24 +166,6 @@ then
   echo "Found $sysrw_path"
   scripts/add_sysrorw_to_update_script
 fi
-
-
-
-#
-# Check for apps2sd
-#
-
-scripts/a2sd_exists
-
-if [ "$?" == "1" ]
-then
-  echo
-  echo "Detected apps2sd"
-  scripts/add_apps2sd_files
-  scripts/add_apps2sd_to_update_script
-fi
-
-echo
 
 
 

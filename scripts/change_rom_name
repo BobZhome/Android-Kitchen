@@ -51,12 +51,12 @@ echo
 echo "$rom_name"
 echo
 echo
-echo -n "Would you like to rename it (y/n)? (default: y): "
+echo -n "Would you like to rename it (y/n)? (default: n): "
 
 read do_rename
 echo
 
-if [ "$do_rename" != "n" ]
+if [ "$do_rename" == "y" ]
 then
 
   echo -n "Please enter the new name: "

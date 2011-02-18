@@ -36,7 +36,7 @@ echo
 echo "Zipalign is a procedure that will optimize all of the *.apk"
 echo "files under your working folder for better RAM utilization."
 echo
-echo "Use this as the *final step* before building your ROM."
+echo "Use this as the last step before building your ROM."
 echo 
 echo "---------------------------------------------------------------"
 echo

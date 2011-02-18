@@ -1,6 +1,3 @@
-
-scripts/extract_kernel_and_modules for_porting
-
 if [ -e device.cfg ]
 then
   my_device=`cat device.cfg`
@@ -10,9 +7,10 @@ fi
 if [ -d MY_KERNEL ] 
 then
   echo
-  scripts/press_enter
+  echo "Press Enter to continue"
+  read enterKey
 else
-  exit 1
+  exit 0
 fi
 
 
@@ -25,7 +23,6 @@ echo
 echo "--> Obtain a ROM that you want to port from ANOTHER DEVICE <--"
 
 scripts/check_rom no_info
-scripts/press_enter
 
 if [ -d WORKING_* ]
 then
@@ -34,6 +31,9 @@ then
 
   if [ -d system ]
   then
+    echo
+    echo "Press Enter to continue"
+    read enterKey
     cd ..
     scripts/ensure_boot_extracted
 
@@ -114,8 +114,8 @@ fi
 #
 
 echo
-echo "Copying MY_KERNEL/zImage to BOOT-EXTRACTED folder"
-cp -f MY_KERNEL/zImage BOOT-EXTRACTED/
+echo "Copying MY_KERNEL/boot.img-kernel to BOOT-EXTRACTED folder"
+cp -f MY_KERNEL/boot.img-kernel BOOT-EXTRACTED/
 
 
 echo

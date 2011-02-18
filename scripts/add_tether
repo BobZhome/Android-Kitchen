@@ -61,13 +61,7 @@ fi
 
 echo "Wireless tethering requires a rooted ROM"
 
-if [ -d BOOT-EXTRACTED/boot.img-ramdisk ]
-then
-  cd BOOT-EXTRACTED/boot.img-ramdisk
-else
-  echo "Error: BOOT-EXTRACTED/boot.img-ramdisk folder not found!"
-  exit 0
-fi
+cd BOOT-EXTRACTED/boot.img-ramdisk
 
 if [ "`grep -m 1 ro.secure default.prop`" == "ro.secure=1" ] 
 then
@@ -182,7 +176,7 @@ then
       
       echo "Overwriting kernel with modified version"
       cp ../../tools/nexus_one_2_1_update/nexusone-zimage ../../BOOT-EXTRACTED/
-      mv ../../BOOT-EXTRACTED/nexusone-zimage ../../BOOT-EXTRACTED/zImage
+      mv ../../BOOT-EXTRACTED/nexusone-zimage ../../BOOT-EXTRACTED/boot.img-kernel
 
       echo
       cd ../..
@@ -246,7 +240,7 @@ then
         cp -f -r ../../tools/$rom_dir/system/* . 
     
         echo "Overwriting kernel with modified version"
-        cp ../../tools/$rom_dir/zImage ../../BOOT-EXTRACTED/
+        cp ../../tools/$rom_dir/boot.img-kernel ../../BOOT-EXTRACTED/
         
         echo
         cd ../..

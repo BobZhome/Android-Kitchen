@@ -34,7 +34,7 @@ then
   if [ "$symlinks" == "" ]
   then
 
-    echo "None detected"
+    echo "None found"
 
     #
     # Build a set of default symlinks in update-script if none found in /system/bin

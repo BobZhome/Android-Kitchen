@@ -5,7 +5,7 @@ echo
 
 if [ -d WORKING_* ]
 then
-  echo Found working folder
+  echo Found working folder:
 else
   echo No working folder found!
   exit 0

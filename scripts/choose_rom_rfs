@@ -102,7 +102,7 @@ then
     scripts/img_files_to_working_folder
     exit $?
   else
-    scripts/zip_file_to_working_folder "$file_chosen"
+    scripts/rfs_to_working_folder "$file_chosen"
     exit $?
   fi
 fi

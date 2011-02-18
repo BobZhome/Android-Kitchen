@@ -29,7 +29,7 @@ then
 
       if [ `grep -c "set_perm_recursive .*SYSTEM:etc/init.d$" update-script` == 0 ]
       then
-        echo "Error: Could not find the line to update in update-script"
+        echo "Error: Could not modify update-script"
       fi
 
     else

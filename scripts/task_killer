@@ -4,15 +4,7 @@ if [ -d BOOT-EXTRACTED ]
 then
   if [ -d WORKING_* ]
   then
-
-    if [ -d BOOT-EXTRACTED/boot.img-ramdisk ]
-    then
-      cd BOOT-EXTRACTED/boot.img-ramdisk
-    else
-      echo "Error: BOOT-EXTRACTED/boot.img-ramdisk folder not found!"
-      exit 0
-    fi
-
+    cd BOOT-EXTRACTED/boot.img-ramdisk
   else
     exit 0
   fi
@@ -46,15 +38,6 @@ do
   init_vals=( ${init_vals[@]} $init_val )
 
   echo " $init_param = $str"
-
-  if [ "$str" == "NOT FOUND" ]
-  then
-    echo 
-    echo "Error: Could not obtain required parameters"
-    cd ../..
-    rm -rf BOOT-EXTRACTED
-    exit 0
-  fi
 
 done
 

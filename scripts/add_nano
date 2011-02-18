@@ -31,15 +31,7 @@ if [ -d BOOT-EXTRACTED ]
 then
   if [ -d WORKING_* ]
   then
-
-    if [ -d BOOT-EXTRACTED/boot.img-ramdisk ]
-    then
-      cd BOOT-EXTRACTED/boot.img-ramdisk
-    else
-      echo "Error: BOOT-EXTRACTED/boot.img-ramdisk folder not found!"
-      exit 0
-    fi
-
+    cd BOOT-EXTRACTED/boot.img-ramdisk
   else
     exit 0
   fi
@@ -61,15 +53,7 @@ else
 
   if [ -e init.rc.bak ]
   then
-    rm -f init.rc.bak
-  fi
-
-  if [ "`grep TERMINFO init.rc`" == "" ]
-  then
-    echo "Error: Could not update init.rc!"
-    cd ../..
-    rm -rf BOOT-EXTRACTED
-    exit 0
+    rm init.rc.bak
   fi
 
   cd ../..

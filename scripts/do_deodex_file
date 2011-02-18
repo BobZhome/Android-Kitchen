@@ -40,11 +40,10 @@ ignore_errors=no
 
 #
 # There may be .odex files that require classes in addition to those
-# included by default.  Many of them are defined below.
+# included by default.
 #
-# These definitions may not cover every single case, so the parent 
-# script 'do_deodex' will utilize a brute-force method if the 
-# problematic .odex file is not covered here.
+# This may not cover every single case, so the parent script 'do_deodex'
+# will utilize a brute-force method if the .odex file is not covered here.
 #
 
 if [ "$odex_file" == "Bluetooth.odex" ]
@@ -98,45 +97,6 @@ then
 elif [ "$odex_file" == "com.htc.rss.odex" ]
 then
   ignore_errors=yes
-fi
-
-
-
-#
-# HTC Ace / Thunderbolt
-#
-
-if [ -e ../framework/com.orange.authentication.simcard.jar ]
-then
-
-  if [ -e ../framework/evernote.jar ]
-  then
-    evernote=:evernote.jar
-  else
-    evernote=
-  fi
-
-  if [ "$odex_file" == "android.policy.odex" ] || \
-      [ "$odex_file" == "services.odex" ]
-  then
-    classfile=com.htc.framework.jar:com.orange.authentication.simcard.jar$evernote
-
-  elif [ "$odex_file" == "com.htc.android.easopen.odex" ] || \
-      [ "$odex_file" == "com.htc.android.pimlib.odex" ] || \
-      [ "$odex_file" == "com.htc.framework.odex" ] || \
-      [ "$odex_file" == "com.scalado.util.ScaladoUtil.odex" ] || \
-      [ "$odex_file" == "framework.odex" ]
-  then
-    classfile=com.orange.authentication.simcard.jar$evernote
-
-  elif [ "$odex_file" == "evernote.odex" ]
-  then
-    classfile=com.orange.authentication.simcard.jar
-
-  elif [ "$odex_file" == "ext.odex" ]
-  then
-    classfile=com.google.translate.jar
-  fi
 fi
 
 

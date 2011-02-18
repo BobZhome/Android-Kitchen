@@ -39,7 +39,7 @@ if [ "$su_path" == "" ]
 then
   echo "'su' binary not found under working folder!"
   cd ..
-  exit 1
+  exit 0
 else
   echo
   echo "Found $su_path"

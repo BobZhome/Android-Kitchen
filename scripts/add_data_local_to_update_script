@@ -11,15 +11,15 @@ then
 else
   echo "Updating update-script with /data/local entries"
 
-  if [ `grep -c "format .*DATA:" update-script` == 0 ]
+  if [ `grep -c "format DATA:" update-script` == 0 ]
   then
-    sed -i -e 's/format\(.*\)SYSTEM:[ ]*[\n]*/format\1SYSTEM:\ndelete DATA:local\n/' update-script
+    sed -i -e 's/format SYSTEM:[ ]*[\n]*/format SYSTEM:\ndelete DATA:local\n/' update-script
   else 
     #
     # The 'delete DATA:local' command is redundant because you're formatting the DATA partition,
     # but we'll do that in case the user decides later to remove the format command. 
     #
-    sed -i -e 's/format\(.*\)DATA:[ ]*[\n]*/format\1DATA:\ndelete DATA:local\n/' update-script
+    sed -i -e 's/format DATA:[ ]*[\n]*/format DATA:\ndelete DATA:local\n/' update-script
   fi
 
   if [ `grep -c "copy_dir PACKAGE:data DATA:" update-script` == 0 ]
@@ -29,16 +29,10 @@ else
 
   sed -i -e 's/copy_dir PACKAGE:data DATA:[ ]*[\n]*/copy_dir PACKAGE:data DATA:\nset_perm 2000 2000 0771 DATA:local\n/' update-script
 
-  grep_data_local=`grep -c "0771 DATA:local" update-script`
+  echo
+  echo "You can now put your custom bootanimation.zip under /data/local."
+  echo "If it is missing then the ROM will use the default boot animation."
 
-  if [ $grep_data_local == 0 ]
-  then
-    echo "Error: Unable to update update-script with /data/local"
-  else
-    echo
-    echo "You can now put your custom bootanimation.zip under /data/local."
-    echo "If it is missing then the ROM will use the default boot animation."
-  fi
 fi
 
 cd ../../../../..

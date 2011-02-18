@@ -46,11 +46,6 @@ then
   fi
 
 
-  if [ `grep -c "/bin/su " update-script` == 0 ]
-  then
-    echo "Error: Could no update update-script with su"
-  fi
-
 else
   echo "Error: No update-script found!"
 fi

@@ -13,10 +13,9 @@ do
   echo ""
   echo "The intent is to improve the performance of all apps. It also"
   echo "puts certain *.apk files into a state where they can be used for"
-  echo "themes, icons, trackball/trackpad modifications, etc."
+  echo "themes."
   echo
-  echo "The process usually takes several minutes and does NOT require"
-  echo "you to sign any of the files afterwards."
+  echo "The deodexing process usually takes several minutes."
   echo
   echo "----------------------------------------------------------------"
   echo
@@ -74,7 +73,7 @@ do
     if [ $num_odex_fr == 0 ] && [ $num_odex_app -gt 0 ]
     then
       echo
-      echo "WARNING: You must deodex the app folder if you had already"
+      echo "Warning: You must deodex the app folder if you had already"
       echo "deodexed the framework folder."
     fi
 
@@ -310,7 +309,7 @@ do
   if [ $num_odex_fr == 0 ] && [ $num_odex_app -gt 0 ]
   then
     echo
-    echo "WARNING: You must deodex the app folder if you had already"
+    echo "Warning: You must deodex the app folder if you had already"
     echo "deodexed the framework folder."
   fi
 

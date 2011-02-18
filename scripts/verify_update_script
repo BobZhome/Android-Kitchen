@@ -128,20 +128,6 @@ do
   fi
 
 
-  #
-  # Does line refer to "TMP" partition?
-  #
-
-  tmp_result=`echo $curr_line | grep TMP:`
-
-  if [ "$tmp_result" != "" ]
-  then  
-    errors_found=$(($errors_found+1))           
-    echo ">> WARNING: TMP partition is not supported in update-script.  You must"
-    echo ">>          convert this update-script to an updater-script."
-    continue
-  fi
-
   first_word=`echo $curr_line | sed -e 's/[ ]*\([^ ]*\) .*/\1/'`
 
   case "$first_word" in
@@ -269,15 +255,6 @@ do
 
       ;;
 
-    "package_extract_file") \
-      expect_path=`echo $curr_line | \
-           sed -e 's/package_extract_file[ ]*\([^ ]*\)[ ]*.*/\1/'`
-
-      errors_found=$(($errors_found+1))           
-      echo ">> WARNING: Command package_extract_file not supported in update-script."
-      echo ">>          However, do not remove this line.  Convert file to updater-script."
-      ;;
-
     "show_progress") \
       ;;
 
@@ -368,5 +345,4 @@ else
   echo "No issues found."
 fi
 
-scripts/update_script_should_convert_back
 scripts/press_enter

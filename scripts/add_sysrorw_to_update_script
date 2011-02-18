@@ -37,11 +37,7 @@ then
     echo
     echo "Updating update-script with sysro and sysrw entries"
     perl -pi -e 's/set_perm 0 2000 0550 SYSTEM:etc\/init.goldfish.sh/set_perm 0 2000 0550 SYSTEM:etc\/init.goldfish.sh\nset_perm 0 0 04755 SYSTEM:bin\/sysrw\nset_perm 0 0 04755 SYSTEM:bin\/sysro\n/g' update-script
- 
-    if [ "`grep -om 1 sysro update-script`" != "sysro" ] || [ "`grep -om 1 sysrw update-script`" != "sysrw" ]
-    then
-      echo "Error: Unable to update update-script with sysro/sysrw"
-    fi
+  
   fi
 
 else
