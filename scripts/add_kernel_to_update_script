@@ -1,7 +1,7 @@
 
 cd WORKING_*
 
-if [ -e zImage]
+if [ -e zImage ]
 then
   mv zImage ./updates/
 else

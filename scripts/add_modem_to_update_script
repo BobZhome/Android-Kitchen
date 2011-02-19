@@ -1,7 +1,7 @@
 
 cd WORKING_*
 
-if [ -e modem.bin]
+if [ -e modem.bin ]
 then
   mv modem.bin ./updates/
 else
