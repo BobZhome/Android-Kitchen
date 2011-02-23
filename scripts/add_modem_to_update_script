@@ -1,16 +1,32 @@
-
+echo ""
 cd WORKING_*
-
-if [ -e modem.bin ]
-then
-  mv modem.bin ./updates/
-else
-  echo "Modem not found!"
-fi
 
 if [ ! -d updates ]
 then
+  echo "Creating updates directory..."
+  echo ""
   mkdir updates
+fi
+
+if [ -e modem.bin ]
+then
+  echo "Moving modem.bin to updates directory..."
+  echo ""
+  mv modem.bin ./updates/
+else
+  echo "*************"
+  echo "    ERROR"
+  echo "*************"
+  echo ""
+  echo "No modem.bin was found in working folder!"
+  echo ""
+  exit
+fi
+
+if [ ! -e ./updates/redbend_ua ]
+then
+  echo "Copying redbend_ua to updates folder..."
+  echo ""
   cp ../tools/redbend_ua ./updates/
 fi
 
@@ -21,14 +37,18 @@ then
 
   if [ "`grep -c \"copy_dir PACKAGE:updates TMP:/updates" update-script`" != "0" ]
   then
-    echo "update-script creates tmp directory"
+    echo "update-script already contains redbend_ua"
   else
     echo "copy_dir PACKAGE:updates TMP:/updates" >> update-script
     echo "set_perm 0 0 755 TMP:/updates/redbend_ua" >> update-script
   fi
-
+ 
+ if [ "`grep -c \"run_program /tmp/updates/redbend_ua restore /tmp/updates/modem.bin /dev/block/bml12" update-script`" != "0" ]
+  then
+    echo "update-script already flashes the modem."
+  else
   echo "run_program /tmp/updates/redbend_ua restore /tmp/updates/modem.bin /dev/block/bml12" >> update-script
-
+ fi
 else
 
   echo "Error: No update-script found!"
