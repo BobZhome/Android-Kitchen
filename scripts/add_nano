@@ -25,55 +25,6 @@ fi
 
 echo 
 
-scripts/ensure_boot_extracted
-
-if [ -d BOOT-EXTRACTED ]
-then
-  if [ -d WORKING_* ]
-  then
-    cd BOOT-EXTRACTED/boot.img-ramdisk
-  else
-    exit 0
-  fi
-else
-  exit 0
-fi
-
-echo
-
-if [ `grep -c TERMINFO init.rc` == 1 ]
-then
-  echo "TERMINFO already defined in init.rc"
-  cd ../..
-  rm -rf BOOT-EXTRACTED
-
-else
-  echo "Setting TERMINFO in init.rc ..."
-  perl -pi -e 's/    export PATH /    export TERMINFO \/system\/etc\/terminfo\n    export PATH /g' init.rc
-
-  if [ -e init.rc.bak ]
-  then
-    rm init.rc.bak
-  fi
-
-  cd ../..
-  scripts/build_boot_img
-
-  echo
-  echo "Adding /system/etc/terminfo ..."
-  echo
-
-  cd WORKING_*
-  mkdir -p system/etc/terminfo
-  cp ../tools/nano_files/terminfo.zip system/etc/terminfo/
-  cd system/etc/terminfo
-  unzip terminfo.zip
-  rm terminfo.zip
-  cd ../../../..
-fi
-
-
-
 cd WORKING_*
 echo
 
