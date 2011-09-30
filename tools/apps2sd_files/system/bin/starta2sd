@@ -913,7 +913,7 @@ case $a2sdcmd
                             $bbcmd rm -f $mntpoint/dalvik-cache/* | $tee;
                             if [ $a2sdcmd == "cachesd" ];
                               then
-                                $bbcmd mv -f /dalvik-cache/* $mntpoint/dalvik-cache | $tee;
+                                $bbcmd mv -f /data/dalvik-cache/* $mntpoint/dalvik-cache | $tee;
                             fi;
                             $bbcmd rm -rf /data/dalvik-cache | $tee;
                             $bbcmd ln -s $mntpoint/dalvik-cache /data/dalvik-cache | $tee;

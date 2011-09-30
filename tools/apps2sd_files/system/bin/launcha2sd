@@ -33,8 +33,8 @@ if [ -e /system/xbin/busybox ];
     fi;
 fi;
 export a2sdfirstboot=`ps | $bbcmd grep -e android.process.acore -q;echo -e $?`;
-export a2sdver="2.7.5.2"
-export a2sdverdate="2010-09-30"
+export a2sdver="2.7.5.2-1"
+export a2sdverdate="2011-01-02"
 # Program variables needed for definition.
 export a2sdlf="/data/dta2sd.log";
 export a2sdsys="/data/dtsysdump.txt";
@@ -343,10 +343,10 @@ if [ $a2sdfirstboot == 1 ];
         fi;
         if [ $a2sdmount == 1 ];    
           then
-#           echo -e "[ ] Checking Ext partition..." | $tee;
-#           /system/bin/e2fsck -p /dev/block/mmcblk0p2 | $tee;
-#           $spcmd cm.e2fsck.errors $?;
-#           echo -e "[ ] e2fsck returned code: `$gpcmd cm.e2fsck.errors;`" >> $a2sdlf;
+           echo -e "[ ] Checking Ext partition..." | $tee;
+           /system/bin/e2fsck -p /dev/block/mmcblk0p2 | $tee;
+           $spcmd cm.e2fsck.errors $?;
+           echo -e "[ ] e2fsck returned code: `$gpcmd cm.e2fsck.errors;`" >> $a2sdlf;
             echo -e "[ ] Mounting ext partitions" | $tee;
             if [ -e /dev/block/mmcblk1p2 ];
               then
@@ -831,7 +831,7 @@ if [ ! -h /data/dalvik-cache ];
                     $bbcmd chmod 777 $mntpoint/dalvik-cache | $tee;
                 fi;
                 $bbcmd rm -rf /data/dalvik-cache | $tee;
-                $bbcmd ln -s $mntpoint/dalvik-cache /data/dalvik-cache | $tee;
+                $bbcmd ln -s $mntpont/dalvik-cache /data/dalvik-cache | $tee;
                 /system/bin/busybox.a2sd reboot -f;
             fi;
         fi;
